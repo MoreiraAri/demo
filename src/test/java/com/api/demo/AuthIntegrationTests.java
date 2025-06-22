@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -18,6 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.Matchers.containsString;
 
 @SpringBootTest
@@ -58,15 +60,18 @@ class AuthIntegrationTests {
     }
 
     @Test
-    void testLoginSuccess() throws Exception {
-        mockMvc.perform(post("/auth/login")
-                .param("username", "admin")
-                .param("password", "123456")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-               .andExpect(status().isOk())
-               .andExpect(content().string(notNullValue()))
-               .andExpect(content().string(s -> jwtService.validateToken(s)));
-    }
+void testLoginSuccess() throws Exception {
+    MvcResult result = mockMvc.perform(post("/auth/login")
+            .param("username", "admin")
+            .param("password", "123456")
+            .contentType(MediaType.APPLICATION_FORM_URLENCODED))
+            .andExpect(status().isOk())
+            .andReturn();
+
+    String responseBody = result.getResponse().getContentAsString();
+    assertNotNull(responseBody);
+    assertTrue(jwtService.validateToken(responseBody));
+}
 
     @Test
     void testLoginFailureInvalidPassword() throws Exception {
