@@ -1,116 +1,119 @@
-# 🚀 API de Autenticação e Autorização com JWT
+# 🔐 API de Autenticação JWT com Spring Boot
 
-Este projeto é uma API REST desenvolvida com **Spring Boot**, que implementa **autenticação e autorização usando JWT**. A API permite autenticar usuários e acessar rotas protegidas com tokens gerados internamente.
+## 📌 Descrição
+
+API RESTful para autenticação via JWT, desenvolvida com Spring Boot. Oferece:
+
+- Segurança via Spring Security + JWT
+- Usuários em banco H2 em memória
+- Documentação automática via Swagger UI
+- Testes de carga com Apache JMeter
 
 ---
 
-## 📁 Clonando o repositório
+## ⚙️ Funcionalidades
+
+- Login com geração de token JWT
+- Validação de token
+- Rotas protegidas por autenticação
+- Console H2 para inspeção do banco
+- Interface Swagger para testar a API
+
+---
+
+## 🛠 Tecnologias
+
+- Java 17+
+- Spring Boot 3.x
+- Spring Security
+- JWT (Auth0)
+- H2 Database (in-memory)
+- Maven
+- Swagger/OpenAPI
+- Apache JMeter (teste de carga)
+
+---
+
+## 🚀 Como Rodar o Projeto
+
+### Passo 1 - Clonar repositório
 
 ```bash
-git clone https://github.com/seu-usuario/nome-do-repositorio.git
-cd nome-do-repositorio
-⚙️ Configuração do ambiente
-Certifique-se de ter o Java 17+ e Maven instalados.
-
-Abra o projeto em uma IDE como IntelliJ, Eclipse ou VS Code.
-
-Verifique o arquivo application.yml (ou application.properties) para alterar a porta ou configurações, se necessário.
-
-Porta padrão configurada: 8080 (ou 8081, 9090 se alterado).
-
-Banco H2 já está configurado em memória.
-
-▶️ Executando a aplicação
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+Passo 2 - Build e execução
 bash
 Copiar
 Editar
 ./mvnw spring-boot:run
-Ou execute pela IDE a partir da classe Application.java.
+Ou execute a classe principal DemoApplication na IDE.
 
-A API estará disponível em:
-📍 http://localhost:8080
+⚙️ Configurações importantes
+Porta padrão
+A aplicação roda em http://localhost:8080.
 
-🧪 Rotas da API
-POST /auth/login → Autentica e retorna um JWT
+Banco H2
+Console acessível em:
+http://localhost:8080/h2-console
 
-GET /api/protegida → Acesso somente com JWT válido no header
 
-🔐 Dados de login de teste
-json
+Usuário: sa
+Senha: (deixe em branco)
+
+📌 Endpoints principais
+Endpoint	Método	Descrição	Acesso
+/auth/login	POST	Realiza login e gera JWT	Público
+/auth/validate	POST	Valida token JWT	Público
+/swagger-ui.html	GET	Documentação interativa Swagger	Público
+Outros endpoints	—	Protegidos via JWT	Autenticados
+
+📚 Documentação Swagger UI
+Acesse em:
+http://localhost:8080/swagger-ui.html
+
+
+🗄 Banco de Dados H2
+O banco está configurado para rodar em memória.
+O console é útil para visualizar os dados e a estrutura.
+
+🧪 Testes Automatizados (JUnit)
+Os testes estão na pasta:
+src/test/java/com/api/demo/
+
+Execute-os via IDE ou comando Maven:
+
+bash
 Copiar
 Editar
-{
-  "username": "admin",
-  "password": "123456"
-}
-🛢️ Console H2
-Acesse o console H2 no navegador:
+./mvnw test
+⚡ Testes de Carga com JMeter
+Arquivo de teste de carga:
+jmeter-tests/login_stress_test.jmx
 
-📍 http://localhost:8080/h2-console
+Como usar:
+Abra o Apache JMeter
 
-JDBC URL: jdbc:h2:mem:testdb
+Importe o arquivo .jmx
 
-Username: sa
+Execute o teste e analise os resultados nos listeners "View Results Tree" e "Summary Report"
 
-Password: (deixe em branco)
-
-📚 Documentação Swagger
-A documentação da API está disponível em:
-
-📍 http://localhost:8080/swagger-ui.html
-ou
-📍 http://localhost:8080/swagger-ui/index.html (dependendo da versão do Swagger)
-
-📈 Testes de carga com Apache JMeter
-🧪 Passos para executar
-Baixe o Apache JMeter
-
-Abra o arquivo .jmx incluído no repositório com o JMeter.
-
-Ajuste a porta e o caminho conforme a configuração do seu backend:
-
-Vá em HTTP Request Defaults:
-
-Server Name: localhost
-
-Port Number: 8080 (ou a porta usada)
-
-Em "Login Request", adicione os parâmetros:
-
-username: admin
-
-password: 123456
-
-Clique no botão Start (▶️) para iniciar os testes.
-
-Visualize os resultados em View Results Tree ou Summary Report.
-
-💡 Tecnologias utilizadas
-Java 17
-
-Spring Boot
-
-Spring Security
-
-JWT (JSON Web Token)
-
-H2 Database
-
-Swagger (OpenAPI)
-
-Apache JMeter
-
-✍️ Autora
-Desenvolvido por Ariana Moreira
-📧 [seu-email@email.com]
-🔗 linkedin.com/in/seu-usuario
-
-🛡️ Observações
-⚠️ Este projeto é para fins educacionais. Para uso em produção:
-
-Armazene o jwt.secret como variável de ambiente.
-
-Use um banco de dados persistente.
-
-Implemente controle de permissões com roles/grupos se necessário.
-
+📁 Estrutura do Projeto
+swift
+Copiar
+Editar
+src/
+├── main/
+│   ├── java/com/api/demo/
+│   │   ├── controller/
+│   │   ├── config/
+│   │   ├── model/
+│   │   ├── repository/
+│   │   ├── service/
+│   ├── resources/
+│       ├── application.yml
+│
+├── test/
+│   └── java/com/api/demo/
+│       └── (Testes JUnit)
+├── jmeter-tests/
+│   └── login_stress_test.jmx
